@@ -1,0 +1,10 @@
+**/.git
+**/node_module
+build
+public
+.*
+*.sh
+*.yml
+*.conf
+*.md
+firebase.json
