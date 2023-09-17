@@ -17,7 +17,7 @@ export async function accessToken(request, response) {
   let token = await _AuthService.accesToken(basicAuth);
 
   if (!token) {
-    response.status(404).json('not token today');
+    response.status(403).json('not token today');
   }
   response.status(200).json(token);
 }

@@ -1,6 +1,5 @@
-import { AuthController } from './controllers/AuthController';
-import { HealthcheckController } from './controllers/HealthcheckController';
-import { requireAuth } from './middleware/auth.middleware';
+import { AuthController } from './controllers/auth.controller';
+import { HealthcheckController } from './controllers/healthcheck.controller';
 export const AppRoutes = [
   {
     path: '/healthCheck',
