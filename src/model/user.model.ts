@@ -1,4 +1,4 @@
-import Perfil from "./Perfil";
+import Perfil from './perfil.model';
 
 class User {
   public idUsername: number;

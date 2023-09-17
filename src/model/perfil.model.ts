@@ -1,4 +1,4 @@
-import Permiso from "./Permiso";
+import Permiso from './permiso.model';
 
 class Perfil {
   public id_perfil: string;

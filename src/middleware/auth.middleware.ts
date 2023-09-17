@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'; // Suponiendo que estás utilizando Express.js
 import container from '../services/inversify.config';
-import { AuthService } from '../services/AuthService';
+import { AuthService } from '../services/auth.service';
 import Types from '../services/types/types';
 
 let _AuthService = container.get<AuthService>(Types.AuthService);

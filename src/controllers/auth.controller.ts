@@ -1,4 +1,4 @@
-import { AuthService } from '../services/AuthService';
+import { AuthService } from '../services/auth.service';
 import Types from '../services/types/types';
 import container from '../services/inversify.config';
 import base64Helper from '../utils/base64Helper';

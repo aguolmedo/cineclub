@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
-import { IAuthService } from './interface/IAuthService';
-import User from '../model/User';
+import { IAuthService } from './interface/iauth.interface';
+import User from '../model/user.model';
 import sha256Helper from '../utils/sha256Helper';
 
 const jwt = require('jsonwebtoken');
@@ -66,6 +66,6 @@ export class AuthService implements IAuthService {
 
     if (!userDB) return false;
 
-    return true;
+    return decodedToken;
   }
 }
