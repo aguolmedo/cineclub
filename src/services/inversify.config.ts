@@ -1,9 +1,9 @@
-import { Container } from "inversify";
-import Types from "./types/types";
-import { IAuthService } from "./interface/IAuthService";
-import { AuthService } from "./AuthService";
-import { IHealthcheckService } from "./interface/IHealthcheckService";
-import { HealthcheckService } from "./HealthcheckService";
+import { Container } from 'inversify';
+import Types from './types/types';
+import { IAuthService } from './interface/IAuthService';
+import { AuthService } from './AuthService';
+import { IHealthcheckService } from './interface/IHealthcheckService';
+import { HealthcheckService } from './HealthcheckService';
 
 const container = new Container();
 

@@ -8,10 +8,6 @@ let _HealthcheckService = container.get<HealthcheckService>(
 );
 
 export async function healthCheck(request, response) {
-  if (!request.headers.authorization) {
-    response.status(401).json("auth error \n debes mandar un token (jwt)");
-    return;
-  }
   const respuesta = await _HealthcheckService.healthCheck();
   if (respuesta) response.status(200).json(respuesta);
   else response.status(500).json("Server Error");

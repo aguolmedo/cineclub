@@ -1,29 +1,71 @@
-import { injectable } from "inversify";
-import { IAuthService } from "./interface/IAuthService";
-import User from "../model/user";
+import { injectable } from 'inversify';
+import { IAuthService } from './interface/IAuthService';
+import User from '../model/User';
+import sha256Helper from '../utils/sha256Helper';
 
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
+const db = require('../dbconfig');
 
 // @ts-ignore
 @injectable()
 export class AuthService implements IAuthService {
-  constructor() {}
-
   public async accesToken(basicAuth: string) {
     try {
-      const user: User = new User(
-        basicAuth.split(":")[0],
-        basicAuth.split(":")[1],
-      );
-      if (
-        user.username != process.env.userADMIN ||
-        user.password != process.env.passwordADMIN
-      )
-        return;
+      const email = basicAuth.split(':')[0];
+      const password = basicAuth.split(':')[1];
 
-      return jwt.sign({ user }, process.env.SECRET, { expiresIn: "300s" });
+      const userDB: User = await db
+        .select()
+        .from('user')
+        .where({
+          email: email,
+          password: password,
+        })
+        .first();
+
+      if (!userDB) return;
+
+      return jwt.sign(
+        {
+          email: userDB.email,
+          password: userDB.password,
+          username: userDB.username,
+        },
+        process.env.SECRET,
+        { expiresIn: '3600s' },
+      );
     } catch (e) {
       return e;
     }
+  }
+
+  public async verifyToken(token: string) {
+    const cleanToken = token.split(' ')[1];
+
+    const decodedToken = jwt.verify(
+      cleanToken,
+      process.env.SECRET,
+      (err: any, decode: any) => {
+        if (err) {
+          return false;
+        }
+        return decode;
+      },
+    );
+
+    if (!decodedToken) return false;
+
+    const userDB: User = await db
+      .select()
+      .from('user')
+      .where({
+        email: decodedToken.email,
+        password: decodedToken.password,
+      })
+      .first();
+
+    if (!userDB) return false;
+
+    return true;
   }
 }
