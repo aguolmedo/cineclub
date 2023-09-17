@@ -1,4 +1,4 @@
-./cineclub/dist
+./cineclub/dist/
 /node_modules
 /.env
 /.idea
