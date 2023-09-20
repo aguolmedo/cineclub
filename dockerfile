@@ -11,12 +11,11 @@ RUN npm i --save-dev @types/node
  
 COPY tsconfig.json /srv/
 COPY src /srv/src/
-COPY .env /srv/
 
 RUN npm run build
 
 RUN npm ci --production
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["node", "/srv/dist/server.js"]
