@@ -1,7 +1,6 @@
 import { injectable } from 'inversify';
 import { IAuthService } from './interface/iauth.interface';
 import User from '../model/user.model';
-import sha256Helper from '../utils/sha256Helper';
 
 const jwt = require('jsonwebtoken');
 const db = require('../dbconfig');
@@ -22,6 +21,8 @@ export class AuthService implements IAuthService {
           password: password,
         })
         .first();
+
+      console.log(userDB);
 
       if (!userDB) return;
 

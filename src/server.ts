@@ -43,7 +43,10 @@ const startServer = async () => {
           process.env.HOSTNAME
         }:${process.env.PORT} -- \n-- Healthcheck endpoint on  http://${
           process.env.HOSTNAME
-        }:${process.env.PORT}/healthcheck --`,
+        }:${process.env.PORT}/healthcheck -- \n
+        -- ENV VARS: 
+         - DB_HOST: 190.247.100.27
+         - DB_NAME: cineclub`,
       );
     });
 };
