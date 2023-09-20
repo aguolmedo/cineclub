@@ -38,12 +38,8 @@ const startServer = async () => {
   https
     .createServer(
       {
-        key: fs.readFileSync(
-          '/home/augusto/cineclub-proyecto/cineclub/key.pem',
-        ),
-        cert: fs.readFileSync(
-          '/home/augusto/cineclub-proyecto/cineclub/cert.pem',
-        ),
+        key: fs.readFileSync('./key.pem'),
+        cert: fs.readFileSync('./cert.csr'),
       },
       app,
     )
