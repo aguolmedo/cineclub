@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import { AppRoutes } from './routes';
 import { requireAuth } from './middleware/auth.middleware';
 
-const https = require('https');
+const http = require('http');
 const fs = require('fs');
 
 require('dotenv').config();
@@ -35,19 +35,13 @@ AppRoutes.forEach((route) => {
 });
 
 const startServer = async () => {
-  https
-    .createServer(
-      {
-        key: fs.readFileSync('./key.pem'),
-        cert: fs.readFileSync('./cert.csr'),
-      },
-      app,
-    )
+  http
+    .createServer(app)
     .listen(process.env.PORT || 8080, process.env.HOSTNAME, () => {
       console.log(
-        `-- ${new Date()} --\n-- Server running on https://${
+        `-- ${new Date()} --\n-- Server running on http://${
           process.env.HOSTNAME
-        }:${process.env.PORT} -- \n-- Healthcheck endpoint on  https://${
+        }:${process.env.PORT} -- \n-- Healthcheck endpoint on  http://${
           process.env.HOSTNAME
         }:${process.env.PORT}/healthcheck --`,
       );
