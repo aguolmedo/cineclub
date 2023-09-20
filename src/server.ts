@@ -43,8 +43,9 @@ const startServer = async () => {
           process.env.HOSTNAME
         }:${process.env.PORT} -- \n-- Healthcheck endpoint on  http://${
           process.env.HOSTNAME
-        }:${process.env.PORT}/healthcheck -- \n
-        -- DB_HOST: ${process.env.DB_HOST}
+        }:${process.env.PORT}/healthcheck -- \n-- DB_HOST: ${
+          process.env.DB_HOST
+        }
         -- DB_NAME: ${process.env.DB_NAME}`,
       );
     });
