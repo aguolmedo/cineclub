@@ -1,7 +1,9 @@
 /dist
 /node_modules
+/.env
 /.idea
 /key.pem
 /cert.pem
 /csr.pem
 /cert.csr
+/fly.toml
