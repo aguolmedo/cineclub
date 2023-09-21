@@ -37,16 +37,11 @@ AppRoutes.forEach((route) => {
 const startServer = async () => {
   http
     .createServer(app)
-    .listen(process.env.PORT || 8080, process.env.HOSTNAME, () => {
+    .listen(process.env.PORT || 3000, process.env.FLY_PUBLIC_IP, () => {
       console.log(
         `-- ${new Date()} --\n-- Server running on http://${
-          process.env.HOSTNAME
-        }:${process.env.PORT} -- \n-- Healthcheck endpoint on  http://${
-          process.env.HOSTNAME
-        }:${process.env.PORT}/healthcheck -- \n-- DB_HOST: ${
-          process.env.DB_HOST
-        }
-        -- DB_NAME: ${process.env.DB_NAME}`,
+          process.env.FLY_PUBLIC_IP
+        }:${process.env.PORT || 3000}`,
       );
     });
 };
