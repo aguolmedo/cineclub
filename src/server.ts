@@ -37,10 +37,10 @@ AppRoutes.forEach((route) => {
 const startServer = async () => {
   http
     .createServer(app)
-    .listen(process.env.PORT || 3000, process.env.FLY_PUBLIC_IP, () => {
+    .listen(process.env.PORT || 3000, process.env.HOSTNAME, () => {
       console.log(
         `-- ${new Date()} --\n-- Server running on http://${
-          process.env.FLY_PUBLIC_IP
+          process.env.HOSTNAME
         }:${process.env.PORT || 3000}`,
       );
     });
