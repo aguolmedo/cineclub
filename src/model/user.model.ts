@@ -8,13 +8,11 @@ class User {
   public perfil: Perfil;
 
   constructor(
-    idUsername: number,
     username: string,
     password: string,
     email: string,
     perfil: Perfil,
   ) {
-    this.idUsername = idUsername;
     this.username = username;
     this.password = password;
     this.email = email;

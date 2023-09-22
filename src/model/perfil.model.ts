@@ -5,10 +5,8 @@ class Perfil {
   public name: string;
   public permisos: Permiso[];
 
-  constructor(id_perfil: string, name: string, permisos: Permiso[]) {
-    this.id_perfil = id_perfil;
+  constructor(name: string) {
     this.name = name;
-    this.permisos = permisos;
   }
 }
 
