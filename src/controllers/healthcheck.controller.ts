@@ -8,7 +8,7 @@ let _HealthcheckService = container.get<HealthcheckService>(
 );
 
 export async function healthCheck(request, response) {
-  const respuesta = await _HealthcheckService.healthCheck();
+  const respuesta = await _HealthcheckService.healthcheck();
   if (respuesta) response.status(200).json(respuesta);
   else response.status(500).json('Server Error');
 }

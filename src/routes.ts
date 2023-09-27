@@ -21,4 +21,16 @@ export const AppRoutes = [
     method: 'post',
     action: UserController.createUser,
   },
+  {
+    path: '/tokenPassword',
+    auth: false,
+    method: 'post',
+    action: UserController.genereteTokenRecoverPassword,
+  },
+  {
+    path: '/recoverPassword',
+    auth: false,
+    method: 'post',
+    action: UserController.recoverPassword,
+  },
 ];

@@ -1,4 +1,4 @@
 export interface IAuthService {
-  accesToken(basicAuth: string): Promise<any>;
-  verifyToken(token: string): Promise<any>;
+  acces_token(basicAuth: string): Promise<any>;
+  verify_token(token: string): Promise<any>;
 }

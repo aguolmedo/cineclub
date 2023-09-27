@@ -4,7 +4,6 @@ import { AppRoutes } from './routes';
 import { requireAuth } from './middleware/auth.middleware';
 
 const http = require('http');
-const fs = require('fs');
 
 require('dotenv').config();
 
@@ -35,11 +34,9 @@ AppRoutes.forEach((route) => {
 });
 
 const startServer = async () => {
-  http
-    .createServer(app)
-    .listen(process.env.PORT || 3000, process.env.HOSTNAME, () => {
-      console.log(`-- ${new Date()} --\n-- Server running --`);
-    });
+  http.createServer(app).listen(process.env.PORT || 3000, '0.0.0.0', () => {
+    console.log(`-- ${new Date()} --\n-- Server running --`);
+  });
 };
 
 (async () => {

@@ -1,10 +1,6 @@
 import { injectable } from 'inversify';
 import { IAuthService } from './interface/iauth.interface';
-import User from '../model/user.model';
-import sha256 from '../utils/sha256Helper';
-import { UserService } from '../services/user.service';
-import Types from './types/types';
-import container from './inversify.config';
+import sha256 from '../utils/sha256.helper';
 
 const jwt = require('jsonwebtoken');
 const db = require('../dbconfig');
@@ -12,7 +8,7 @@ const db = require('../dbconfig');
 // @ts-ignore
 @injectable()
 export class AuthService implements IAuthService {
-  public async accesToken(basicAuth: string) {
+  public async acces_token(basicAuth: string) {
     try {
       const email = basicAuth.split(':')[0];
       const password = sha256.encrypt(basicAuth.split(':')[1]);
@@ -43,7 +39,7 @@ export class AuthService implements IAuthService {
     }
   }
 
-  public async verifyToken(token: string) {
+  public async verify_token(token: string) {
     const cleanToken = token.split(' ')[1];
 
     const decodedToken = jwt.verify(
@@ -59,9 +55,9 @@ export class AuthService implements IAuthService {
 
     if (!decodedToken) return false;
 
-    const userDB: User = await db
+    const userDB = await db
       .select()
-      .from('user')
+      .from('USUARIOS')
       .where({
         email: decodedToken.email,
         password: decodedToken.password,

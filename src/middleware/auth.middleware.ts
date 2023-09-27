@@ -16,7 +16,7 @@ export async function requireAuth(
     return res.status(401).json({ message: 'Not Authorized' });
   }
 
-  const decodedToken = await _AuthService.verifyToken(token);
+  const decodedToken = await _AuthService.verify_token(token);
 
   if (!decodedToken) {
     return res.status(401).json({ message: 'Invalid Token' });

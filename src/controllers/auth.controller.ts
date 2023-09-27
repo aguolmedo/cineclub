@@ -1,7 +1,7 @@
 import { AuthService } from '../services/auth.service';
 import Types from '../services/types/types';
 import container from '../services/inversify.config';
-import base64Helper from '../utils/base64Helper';
+import base64Helper from '../utils/base64.helper';
 
 let _AuthService = container.get<AuthService>(Types.AuthService);
 
@@ -14,7 +14,7 @@ export async function accessToken(request, response) {
     request.headers.authorization.split(' ')[1],
   );
 
-  let token = await _AuthService.accesToken(basicAuth);
+  let token = await _AuthService.acces_token(basicAuth);
 
   if (!token) {
     response.status(403).json('not token today');

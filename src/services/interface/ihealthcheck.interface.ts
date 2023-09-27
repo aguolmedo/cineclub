@@ -1,3 +1,3 @@
 export interface IHealthcheckService {
-  healthCheck(): Promise<any>;
+  healthcheck(): Promise<any>;
 }
