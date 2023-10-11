@@ -27,7 +27,6 @@ export class AuthService implements IAuthService {
       return jwt.sign(
         {
           email: userDB.TX_MAIL,
-          password: userDB.TX_CONTRASEÑA,
           nombre: userDB.TX_NOMBRE,
           profile: userDB.ID_PERFIL,
         },
@@ -60,7 +59,6 @@ export class AuthService implements IAuthService {
       .from('USUARIOS')
       .where({
         email: decodedToken.email,
-        password: decodedToken.password,
       })
       .first();
 
