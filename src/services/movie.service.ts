@@ -8,7 +8,7 @@ export class MovieService implements IMovieService {
     throw new Error('Method not implemented.');
   }
   editMovie(data: any): Promise<any> {
-    throw new Error('Method not implemented.');
+    throw new Error('Method not implementado capo.');
   }
   deleteMovie(data: any): Promise<any> {
     throw new Error('Method not implemented.');
