@@ -4,6 +4,7 @@ import { AppRoutes } from './routes';
 import { requireAuth } from './middleware/auth.middleware';
 
 const http = require('http');
+const cors = require('cors');
 
 require('dotenv').config();
 
@@ -16,6 +17,12 @@ process.env.TZ = 'America/Argentina/Cordoba';
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(fileUpload());
+
+app.use(
+  cors({
+    origin: '*',
+  }),
+);
 
 AppRoutes.forEach((route) => {
   if (route.auth)
