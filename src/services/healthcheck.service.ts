@@ -5,6 +5,6 @@ import { IHealthcheckService } from './interface/ihealthcheck.interface';
 @injectable()
 export class HealthcheckService implements IHealthcheckService {
   public async healthcheck() {
-    return { version: '1.0.1' };
+    return { version: '1.0.2' };
   }
 }
