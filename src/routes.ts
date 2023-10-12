@@ -16,6 +16,12 @@ export const AppRoutes = [
     action: AuthController.accessToken,
   },
   {
+    path: '/verifyToken',
+    auth: false,
+    method: 'post',
+    action: AuthController.verifyToken,
+  },
+  {
     path: '/user',
     auth: false,
     method: 'post',

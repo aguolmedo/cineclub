@@ -14,11 +14,12 @@ export class AuthService implements IAuthService {
       const password = sha256.encrypt(basicAuth.split(':')[1]);
 
       const userDB = await db
-        .select()
+        .select('USUARIOS.*', 'PERFILES.TX_NOMBRE') // Reemplaza NOMBRE_DEL_PERFIL por el nombre real de la columna
         .from('USUARIOS')
+        .join('PERFILES', 'USUARIOS.ID_PERFIL', 'PERFILES.ID_PERFIL')
         .where({
-          TX_MAIL: email,
-          TX_CONTRASEÑA: password,
+          'USUARIOS.TX_MAIL': email,
+          'USUARIOS.TX_CONTRASEÑA': password,
         })
         .first();
 
@@ -58,7 +59,7 @@ export class AuthService implements IAuthService {
       .select()
       .from('USUARIOS')
       .where({
-        email: decodedToken.email,
+        TX_MAIL: decodedToken.email,
       })
       .first();
 

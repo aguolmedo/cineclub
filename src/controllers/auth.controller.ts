@@ -22,6 +22,20 @@ export async function accessToken(request, response) {
   response.status(200).json(token);
 }
 
+export async function verifyToken(request, response) {
+  if (!request.headers.authorization) {
+    return response.status(401).json('auth error debes mandar un token');
+  }
+
+  let token = await _AuthService.verify_token(request.headers.authorization);
+
+  if (!token) {
+    response.status(403).json('not token today');
+  }
+  response.status(200).json(token);
+}
+
 export const AuthController = {
   accessToken,
+  verifyToken,
 };
