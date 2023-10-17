@@ -27,7 +27,7 @@ export async function genereteTokenRecoverPassword(request, response) {
       request.body.email,
       'PASSWORD RECOVERY CINECLUBPLAY',
       'SALUTEEE',
-      `<p>${token}</p>`,
+      `<p>https://cineclub-frontend-angular.fly.dev/us/recoverypassword?token=${token}</p>`,
     );
 
     response.status(200).json('Password recovery token generated');
