@@ -26,7 +26,7 @@ export async function genereteTokenRecoverPassword(request, response) {
       'Forgot Password <cineclubplay@gmail.com>',
       request.body.email,
       'PASSWORD RECOVERY CINECLUBPLAY',
-      'SALUTEEE',
+      'No reply',
       `<p>https://cineclub-frontend-angular.fly.dev/us/recoverypassword?token=${token}</p>`,
     );
 
@@ -41,6 +41,8 @@ export async function recoverPassword(request, response) {
     const token = request.query.token;
 
     if (!token) response.status(400).json('no token');
+
+    if (!request.body.password) response.status(400).json('no password');
 
     const passwordRecovered = await _UserService.regenerate_password(
       token,

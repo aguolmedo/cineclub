@@ -103,6 +103,10 @@ export class UserService implements IUserService {
         ID_USUARIO: userDb.ID_USUARIO,
       });
 
+    await db.del().from('TOKENS').where({
+      TX_TOKEN: token,
+    });
+
     return true;
   }
 }
