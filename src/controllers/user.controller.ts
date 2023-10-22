@@ -23,12 +23,12 @@ export async function genereteTokenRecoverPassword(request, response) {
     if (!token) response.status(404).json('user not found');
 
     await emailHelper.send_mail(
-      'Cineclub Play no-reply <cineclubplay@gmail.com>',
+      'Cineclub Play <cineclubplay@gmail.com>',
       request.body.email,
       'Recuperar contraseña',
       'No reply',
       `     
-        <h1>cineclub play</h1>
+        <h1>Cineclub Play</h1>
         <p>Haz clic en el botón a continuación para regenerar tu contraseña:</p>
         <a href="https://cineclub-frontend-angular.fly.dev/us/recoverypassword?token=${token}">
           <button style="background-color: #007bff; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Haz click aquí</button>
