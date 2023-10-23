@@ -15,7 +15,7 @@ export class MovieService implements IMovieService {
   }
 
   upload_front_page_video(videoFile: any) {
-    const uploadPath = 'cineclub/assets/' + videoFile.name;
+    const uploadPath = 'assets/' + videoFile.name;
 
     videoFile.mv(
       uploadPath,
