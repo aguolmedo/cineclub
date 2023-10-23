@@ -1,6 +1,7 @@
 import { AuthController } from './controllers/auth.controller';
 import { HealthcheckController } from './controllers/healthcheck.controller';
 import { UserController } from './controllers/user.controller';
+import { MovieController } from './controllers/movie.controller';
 
 export const AppRoutes = [
   {
@@ -38,5 +39,11 @@ export const AppRoutes = [
     auth: false,
     method: 'post',
     action: UserController.recoverPassword,
+  },
+  {
+    path: '/uploadFrontPageVideo',
+    auth: false,
+    method: 'post',
+    action: MovieController.uploadFrontPageVideo,
   },
 ];

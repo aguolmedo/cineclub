@@ -1,19 +1,24 @@
 import Types from '../services/types/types';
 
 import container from '../services/inversify.config';
-import { UserService } from '../services/user.service';
+import { MovieService } from '../services/movie.service';
 
-let _UserService = container.get<UserService>(Types.UserService);
+let _MovieService = container.get<MovieService>(Types.MovieService);
 
-export async function createUser(request, response) {
+export async function uploadFrontPageVideo(request, response) {
   try {
-    const respuesta = await _UserService.create_user(request.body);
-    if (respuesta) response.status(200).json('User Created');
+    if (!request.files || !request.files.video) {
+      return request.status(400).json('No video file provided');
+    }
+    const respuesta = await _MovieService.upload_front_page_video(
+      request.files.video,
+    );
+    if (respuesta) response.status(200).json('Video uploaded');
   } catch (e) {
     response.status(500).json(e.toString());
   }
 }
 
-export const UserController = {
-  createUser,
+export const MovieController = {
+  uploadFrontPageVideo,
 };

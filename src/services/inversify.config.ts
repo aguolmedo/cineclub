@@ -6,6 +6,8 @@ import { IHealthcheckService } from './interface/ihealthcheck.interface';
 import { HealthcheckService } from './healthcheck.service';
 import { IUserService } from './interface/iuser.interface';
 import { UserService } from './user.service';
+import { IMovieService } from './interface/imovie.interface';
+import { MovieService } from './movie.service';
 
 const container = new Container();
 
@@ -14,5 +16,7 @@ container
   .bind<IHealthcheckService>(Types.HealthcheckService)
   .to(HealthcheckService);
 container.bind<IUserService>(Types.UserService).to(UserService);
+
+container.bind<IMovieService>(Types.MovieService).to(MovieService);
 
 export default container;

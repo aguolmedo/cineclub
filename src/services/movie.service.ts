@@ -13,4 +13,20 @@ export class MovieService implements IMovieService {
   deleteMovie(data: any): Promise<any> {
     throw new Error('Metodo no implementado');
   }
+
+  upload_front_page_video(videoFile: any) {
+    const uploadPath = 'cineclub/assets/' + videoFile.name;
+
+    videoFile.mv(
+      uploadPath,
+      (err) => {
+        if (err) {
+          console.error(err);
+          return false;
+        }
+      },
+      console.log('File received:', videoFile.name),
+    );
+    return true;
+  }
 }
