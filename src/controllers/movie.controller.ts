@@ -8,7 +8,7 @@ let _MovieService = container.get<MovieService>(Types.MovieService);
 export async function uploadFrontPageVideo(request, response) {
   try {
     if (!request.files || !request.files.video) {
-      return request.status(400).json('No video file provided');
+      return response.status(400).json('No video file provided');
     }
     const respuesta = await _MovieService.upload_front_page_video(
       request.files.video,
