@@ -34,7 +34,7 @@ export class MovieService implements IMovieService {
 
   async get_front_page_video() {
     let frontPageVideoUrl = await this._GoogleCloudService.get_file_url(
-      'front-page/front-page-video',
+      'front-page/front-page-video.mp4',
     );
 
     if (!frontPageVideoUrl) return false;

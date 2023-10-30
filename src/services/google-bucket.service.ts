@@ -30,7 +30,7 @@ export class GoogleCloudService implements IGoogleCloudService {
       let options = {};
       await this.storage
         .bucket(this.bucketName)
-        .file(filePath)
+        .file(filePath + '.mp4')
         .save(file.data, {
           gzip: true,
 
