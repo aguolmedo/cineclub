@@ -27,7 +27,18 @@ export class GoogleCloudService implements IGoogleCloudService {
 
   public async upload_file(filePath: string, file) {
     try {
-      await this.storage.bucket(this.bucketName).file(filePath).save(file.data);
+      let options = {};
+      await this.storage
+        .bucket(this.bucketName)
+        .file(filePath)
+        .save(file.data, {
+          gzip: true,
+
+          metadata: {
+            cacheControl: 'no-cache',
+            mimetype: 'video/mp4',
+          },
+        });
       return true;
     } catch (e) {
       console.error(
