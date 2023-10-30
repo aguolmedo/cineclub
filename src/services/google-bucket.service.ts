@@ -40,9 +40,12 @@ export class GoogleCloudService implements IGoogleCloudService {
   public async get_file_url(filePath) {
     try {
       const file = await this.storage.bucket(this.bucketName).file(filePath);
-      const videoData = await file.download();
+      const signedUrl = await file.getSignedUrl({
+        action: 'read',
+        expires: Date.now() + 60 * 60 * 1000, // 1 hour
+      });
 
-      return videoData;
+      return signedUrl;
     } catch (e) {}
   }
 }
