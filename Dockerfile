@@ -28,6 +28,8 @@ RUN npm ci --include=dev
 COPY --link . .
 
 # Build application
+COPY generate-google-api-credentials.js .
+RUN node generate-google-api-credentials.js
 RUN npm run build
 
 # Remove development dependencies

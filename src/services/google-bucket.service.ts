@@ -9,7 +9,7 @@ import { injectable } from 'inversify';
 @injectable()
 export class GoogleCloudService implements IGoogleCloudService {
   public storage = new Storage({
-    keyFilename: 'cineclub/cineclub-service-account.json',
+    keyFilename: 'cineclub-service-account.json',
   });
   public bucketName = 'cineclub-cloud-bucket';
 
