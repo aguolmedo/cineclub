@@ -12,10 +12,19 @@ export async function uploadFrontPageVideo(request, response) {
       console.log(request.files?.video);
       return response.status(400).json('No video file provided');
     }
-    const respuesta = await _MovieService.upload_front_page_video(
+    const resourceUrl = await _MovieService.upload_front_page_video(
       request.files.video,
     );
-    if (respuesta) response.status(200).json('Video uploaded');
+    if (resourceUrl) response.status(200).json(resourceUrl);
+  } catch (e) {
+    response.status(500).json(e.toString());
+  }
+}
+
+export async function getFrontPageVideo(request, response) {
+  try {
+    const frontPageVideoUrl = await _MovieService.get_front_page_video();
+    if (frontPageVideoUrl) response.status(200).json(frontPageVideoUrl);
   } catch (e) {
     response.status(500).json(e.toString());
   }
@@ -23,4 +32,5 @@ export async function uploadFrontPageVideo(request, response) {
 
 export const MovieController = {
   uploadFrontPageVideo,
+  getFrontPageVideo,
 };

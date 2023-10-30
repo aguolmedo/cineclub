@@ -1,9 +1,16 @@
 import { injectable } from 'inversify';
 import { IMovieService } from './interface/imovie.interface';
+import container from './inversify.config';
+import { GoogleCloudService } from './google-bucket.service';
+import Types from './types/types';
 
 // @ts-ignore
 @injectable()
 export class MovieService implements IMovieService {
+  _GoogleCloudService = container.get<GoogleCloudService>(
+    Types.GoogleCloudService,
+  );
+
   createMovie(data: any): Promise<any> {
     throw new Error('Method not implemented.');
   }
@@ -14,19 +21,24 @@ export class MovieService implements IMovieService {
     throw new Error('Metodo no implementado');
   }
 
-  upload_front_page_video(videoFile: any) {
-    const uploadPath = 'assets/' + videoFile.name;
-
-    videoFile.mv(
-      uploadPath,
-      (err) => {
-        if (err) {
-          console.error(err);
-          return false;
-        }
-      },
-      console.log('File received:', videoFile.name),
+  async upload_front_page_video(videoFile: any) {
+    let resourceUrl = await this._GoogleCloudService.upload_file(
+      'front-page/front-page-video',
+      videoFile,
     );
-    return true;
+
+    if (!resourceUrl) return false;
+
+    return resourceUrl;
+  }
+
+  async get_front_page_video() {
+    let frontPageVideoUrl = await this._GoogleCloudService.get_file_url(
+      'front-page/front-page-video',
+    );
+
+    if (!frontPageVideoUrl) return false;
+
+    return frontPageVideoUrl;
   }
 }

@@ -11,6 +11,12 @@ export const AppRoutes = [
     action: HealthcheckController.healthCheck,
   },
   {
+    path: '/listFiles',
+    auth: false,
+    method: 'get',
+    action: HealthcheckController.listFiles,
+  },
+  {
     path: '/token',
     auth: false,
     method: 'get',
@@ -45,5 +51,11 @@ export const AppRoutes = [
     auth: false,
     method: 'post',
     action: MovieController.uploadFrontPageVideo,
+  },
+  {
+    path: '/getFrontPageVideo',
+    auth: false,
+    method: 'get',
+    action: MovieController.getFrontPageVideo,
   },
 ];

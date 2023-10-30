@@ -6,10 +6,6 @@
 app = "cineclub-backend-nodejs"
 primary_region = "eze"
 
-[mounts]
-  source="assets"
-  destination="/assets"
-
 [build]
 
 [http_service]
