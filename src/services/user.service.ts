@@ -109,4 +109,6 @@ export class UserService implements IUserService {
 
     return true;
   }
+
+  public async modifyUser(token: string) {}
 }

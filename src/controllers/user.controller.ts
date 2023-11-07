@@ -61,6 +61,8 @@ export async function recoverPassword(request, response) {
   }
 }
 
+export async function modifyUser(request, response) {}
+
 export const UserController = {
   createUser,
   genereteTokenRecoverPassword,

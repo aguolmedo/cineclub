@@ -27,22 +27,21 @@ export class GoogleCloudService implements IGoogleCloudService {
 
   public async upload_file(filePath: string, file) {
     try {
-      let options = {};
       await this.storage
         .bucket(this.bucketName)
-        .file(filePath + '.mp4')
+        .file(filePath)
         .save(file.data, {
           gzip: true,
 
           metadata: {
             cacheControl: 'no-cache',
-            mimetype: 'video/mp4',
           },
         });
       return true;
     } catch (e) {
       console.error(
-        `Error while uploading a file to ${this.bucketName}, Error: ` + e,
+        `Error while uploading a file to ${this.bucketName}, in route: ${filePath} Error: ` +
+          e,
       );
       return null;
     }

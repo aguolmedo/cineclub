@@ -22,5 +22,5 @@ export async function requireAuth(
     return res.status(401).json({ message: 'Invalid Token' });
   }
 
-  next();
+  next(token);
 }

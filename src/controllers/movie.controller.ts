@@ -30,7 +30,20 @@ export async function getFrontPageVideo(request, response) {
   }
 }
 
+export async function createMovie(request, response) {
+  try {
+    const movieCreated = await _MovieService.createMovie(
+      request.body,
+      request.files.poster,
+    );
+    if (movieCreated) response.status(200).json('Movie created succesfully');
+  } catch (e) {
+    response.status(500).json(e.toString());
+  }
+}
+
 export const MovieController = {
   uploadFrontPageVideo,
   getFrontPageVideo,
+  createMovie,
 };

@@ -58,4 +58,10 @@ export const AppRoutes = [
     method: 'get',
     action: MovieController.getFrontPageVideo,
   },
+  {
+    path: '/createMovie',
+    auth: false,
+    method: 'post',
+    action: MovieController.createMovie,
+  },
 ];
