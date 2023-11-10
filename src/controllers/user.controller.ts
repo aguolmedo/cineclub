@@ -2,7 +2,7 @@ import Types from '../services/types/types';
 import emailHelper from '../utils/email.helper';
 import container from '../services/inversify.config';
 import { UserService } from '../services/user.service';
-
+import User from '../model/user.model';
 let _UserService = container.get<UserService>(Types.UserService);
 
 export async function createUser(request, response) {
@@ -61,10 +61,28 @@ export async function recoverPassword(request, response) {
   }
 }
 
-export async function modifyUser(request, response) {}
+export async function modifyUser(request, response) {
+  try {
+    const { idUsuario } = request.decodedToken;
+
+    const { field, updatedField } = request.body;
+
+    const updatedUser = await _UserService.modify_user(
+      idUsuario,
+      field,
+      updatedField,
+    );
+
+    if (!updatedUser) return response.status(400).json('Error updating user');
+    return response.status(200).json('User updated succesfully');
+  } catch (e) {
+    return response.status(500).json('Error updating user: ' + e.toString());
+  }
+}
 
 export const UserController = {
   createUser,
   genereteTokenRecoverPassword,
   recoverPassword,
+  modifyUser,
 };

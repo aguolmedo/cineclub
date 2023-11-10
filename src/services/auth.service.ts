@@ -14,7 +14,7 @@ export class AuthService implements IAuthService {
       const password = sha256.encrypt(basicAuth.split(':')[1]);
 
       const userDB = await db
-        .select('USUARIOS.*', 'PERFILES.TX_NOMBRE') // Reemplaza NOMBRE_DEL_PERFIL por el nombre real de la columna
+        .select('USUARIOS.*', 'PERFILES.TX_NOMBRE as NOMBRE_PERFIL') // Reemplaza NOMBRE_DEL_PERFIL por el nombre real de la columna
         .from('USUARIOS')
         .join('PERFILES', 'USUARIOS.ID_PERFIL', 'PERFILES.ID_PERFIL')
         .where({
@@ -27,8 +27,10 @@ export class AuthService implements IAuthService {
 
       return jwt.sign(
         {
+          idUsuario: userDB.ID_USUARIO,
           email: userDB.TX_MAIL,
           nombre: userDB.TX_NOMBRE,
+          apellido: userDB.TX_APELLIDO,
           profile: userDB.ID_PERFIL,
         },
         process.env.SECRET,

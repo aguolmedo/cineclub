@@ -35,6 +35,12 @@ export const AppRoutes = [
     action: UserController.createUser,
   },
   {
+    path: '/modifyUser',
+    auth: true,
+    method: 'put',
+    action: UserController.modifyUser,
+  },
+  {
     path: '/tokenPassword',
     auth: false,
     method: 'post',

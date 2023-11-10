@@ -5,8 +5,12 @@ import Types from '../services/types/types';
 
 let _AuthService = container.get<AuthService>(Types.AuthService);
 
+interface RequestWithDecodedToken extends Request {
+  decodedToken?: any;
+}
+
 export async function requireAuth(
-  req: Request,
+  req: RequestWithDecodedToken,
   res: Response,
   next: NextFunction,
 ) {
@@ -22,5 +26,7 @@ export async function requireAuth(
     return res.status(401).json({ message: 'Invalid Token' });
   }
 
-  next(token);
+  req.decodedToken = decodedToken;
+
+  next();
 }

@@ -2,6 +2,7 @@ import { injectable } from 'inversify';
 import { IUserService } from './interface/iuser.interface';
 import sha256 from '../utils/sha256.helper';
 import sha256Helper from '../utils/sha256.helper';
+import User from '../model/user.model';
 
 const db = require('../dbconfig');
 
@@ -110,5 +111,27 @@ export class UserService implements IUserService {
     return true;
   }
 
-  public async modifyUser(token: string) {}
+  public async modify_user(idUsuario, field, updatedField) {
+    try {
+      if (field === 'TX_CONTRASEÑA') {
+        updatedField = sha256Helper.encrypt(updatedField);
+      }
+
+      const updatedRows = await db('USUARIOS')
+        .where({ ID_USUARIO: idUsuario })
+        .update({
+          [field]: [updatedField],
+        });
+
+      if (!updatedRows) {
+        console.log('Error updating user');
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      return false;
+    }
+  }
 }
