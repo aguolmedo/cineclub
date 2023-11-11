@@ -11,6 +11,13 @@ export async function getAllAwards(request, response) {
   else response.status(500).json('Error getting awards');
 }
 
+export async function createAward(request, response) {
+  const respuesta = await _AwardService.create_award(request.body);
+  if (respuesta) response.status(200).json(respuesta);
+  else response.status(500).json('Error creating award');
+}
+
 export const AwardController = {
   getAllAwards,
+  createAward,
 };

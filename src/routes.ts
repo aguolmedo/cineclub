@@ -77,4 +77,10 @@ export const AppRoutes = [
     method: 'get',
     action: AwardController.getAllAwards,
   },
+  {
+    path: '/award',
+    auth: false,
+    method: 'post',
+    action: AwardController.createAward,
+  },
 ];

@@ -13,4 +13,18 @@ export class AwardService implements IAwardService {
 
     return awards;
   }
+
+  async create_award(award: any) {
+    const newAward = await db
+      .insert({
+        NOMBRE: award.nombre,
+        DESCRIPCION: award.descripcion,
+        ANIO: award.anio,
+      })
+      .into('PREMIO');
+
+    if (!newAward) throw 'Error inserting user in db';
+
+    return true;
+  }
 }
