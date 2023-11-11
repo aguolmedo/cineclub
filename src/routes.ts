@@ -2,19 +2,14 @@ import { AuthController } from './controllers/auth.controller';
 import { HealthcheckController } from './controllers/healthcheck.controller';
 import { UserController } from './controllers/user.controller';
 import { MovieController } from './controllers/movie.controller';
-
+import { AwardController } from './controllers/award.controller';
+import { GenreController } from './controllers/genre.controller';
 export const AppRoutes = [
   {
     path: '/healthCheck',
     auth: false,
     method: 'get',
     action: HealthcheckController.healthCheck,
-  },
-  {
-    path: '/listFiles',
-    auth: false,
-    method: 'get',
-    action: HealthcheckController.listFiles,
   },
   {
     path: '/token',
@@ -69,5 +64,17 @@ export const AppRoutes = [
     auth: false,
     method: 'post',
     action: MovieController.createMovie,
+  },
+  {
+    path: '/genres',
+    auth: false,
+    method: 'get',
+    action: GenreController.getAllGenres,
+  },
+  {
+    path: '/awards',
+    auth: false,
+    method: 'get',
+    action: AwardController.getAllAwards,
   },
 ];

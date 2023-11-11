@@ -18,18 +18,18 @@ export class MovieService implements IMovieService {
     try {
       let moviePosterFormat = moviePoster.mimetype.split('/')[1];
 
-      await db.raw(`Call PR_INSERTAR_PELICULA(
-      "${movie.nombre}",${movie.duracion},"${movie.sinopsis}","${movie.pais}",${movie.anioEstreno},"${movie.idioma}","${movie.soporte}","${movie.calificacion}"
-    );`);
-
-      await db.raw(`CALL SP_AGREGAR_GENERO_A_PELICULA(
-        "${movie.nombre}","${movie.generos.toString()}"
-      )`);
-
       await this._GoogleCloudService.upload_file(
         `movie-posters/${movie.nombre}-${movie.anioEstreno}.${moviePosterFormat}`,
         moviePoster,
       );
+
+      await db.raw(`Call PR_INSERTAR_PELICULA(
+      "${movie.nombre}",${movie.duracion},"${movie.sinopsis}","${movie.pais}",${movie.anioEstreno},"${movie.idioma}","${movie.soporte}","${movie.calificacion}"
+      );`);
+
+      await db.raw(`CALL SP_AGREGAR_GENERO_A_PELICULA(
+        "${movie.nombre}","${movie.generos.toString()}"
+      )`);
 
       console.log('Movie created Succesfully.');
       return true;

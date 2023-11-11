@@ -4,6 +4,8 @@ export const Types = {
   UserService: Symbol('IUserService'),
   MovieService: Symbol('IMovieService'),
   GoogleCloudService: Symbol('IGoogleCloudService'),
+  GenreService: Symbol('IGenreService'),
+  AwardService: Symbol('IAwardService'),
 };
 
 export default Types;
