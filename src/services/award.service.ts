@@ -8,7 +8,7 @@ const db = require('../dbconfig');
 export class AwardService implements IAwardService {
   async get_awards(): Promise<any> {
     const awards = await db
-      .select('NOMBRE', 'DESCRIPCION', 'ANIO')
+      .select('NOMBRE', 'DESCRIPCION', 'AÑO')
       .from('PREMIO');
 
     return awards;
@@ -19,7 +19,7 @@ export class AwardService implements IAwardService {
       .insert({
         NOMBRE: award.nombre,
         DESCRIPCION: award.descripcion,
-        ANIO: award.anio,
+        AÑO: award.anio,
       })
       .into('PREMIO');
 

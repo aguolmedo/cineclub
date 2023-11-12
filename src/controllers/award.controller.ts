@@ -12,6 +12,9 @@ export async function getAllAwards(request, response) {
 }
 
 export async function createAward(request, response) {
+  if (!request.body.nombre || !request.body.descripcion || !request.body.anio) {
+    response.status(400).json('Incomplete request.');
+  }
   const respuesta = await _AwardService.create_award(request.body);
   if (respuesta) response.status(200).json(respuesta);
   else response.status(500).json('Error creating award');

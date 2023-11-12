@@ -37,7 +37,8 @@ export class GoogleCloudService implements IGoogleCloudService {
             cacheControl: 'no-cache',
           },
         });
-      return true;
+
+      return this.get_file_url(filePath);
     } catch (e) {
       console.error(
         `Error while uploading a file to ${this.bucketName}, in route: ${filePath} Error: ` +
@@ -49,13 +50,10 @@ export class GoogleCloudService implements IGoogleCloudService {
 
   public async get_file_url(filePath) {
     try {
-      const file = await this.storage.bucket(this.bucketName).file(filePath);
-      const signedUrl = await file.getSignedUrl({
-        action: 'read',
-        expires: Date.now() + 60 * 60 * 1000, // 1 hour
-      });
-
-      return signedUrl;
-    } catch (e) {}
+      return ` https://storage.googleapis.com/${this.bucketName}/${filePath}`;
+    } catch (e) {
+      console.log(e);
+      return;
+    }
   }
 }

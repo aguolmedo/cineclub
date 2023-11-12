@@ -4,6 +4,8 @@ import container from './inversify.config';
 import { GoogleCloudService } from './google-bucket.service';
 import Types from './types/types';
 import Movie from '../model/movie.model';
+import Award from '../model/award.model';
+import Elenco from '../model/elenco.model';
 
 const db = require('../dbconfig');
 
@@ -14,27 +16,67 @@ export class MovieService implements IMovieService {
     Types.GoogleCloudService,
   );
 
-  async createMovie(movie: Movie, moviePoster) {
+  async createMovie(movie: Movie, imgPoster, imgEstreno) {
     try {
-      let moviePosterFormat = moviePoster.mimetype.split('/')[1];
+      let moviePosterFormat = imgPoster.mimetype.split('/')[1];
+      let movieEstrenoFormat = imgEstreno.mimetype.split('/')[1];
 
-      await this._GoogleCloudService.upload_file(
-        `movie-posters/${movie.nombre}-${movie.anioEstreno}.${moviePosterFormat}`,
-        moviePoster,
+      movie.linkPoster = await this._GoogleCloudService.upload_file(
+        `movie-posters/${movie.nombre}-${movie.anioEstreno}-poster.${moviePosterFormat}`,
+        imgPoster,
+      );
+      movie.linkEstreno = await this._GoogleCloudService.upload_file(
+        `movie-posters/${movie.nombre}-${movie.anioEstreno}-estreno.${movieEstrenoFormat}`,
+        imgEstreno,
       );
 
       await db.raw(`Call PR_INSERTAR_PELICULA(
       "${movie.nombre}",${movie.duracion},"${movie.sinopsis}","${movie.pais}",${movie.anioEstreno},"${movie.idioma}","${movie.soporte}","${movie.calificacion}"
       );`);
 
-      await db.raw(`CALL SP_AGREGAR_GENERO_A_PELICULA(
+      await db.raw(`Call SP_AGREGAR_GENERO_A_PELICULA(
         "${movie.nombre}","${movie.generos.toString()}"
-      )`);
+      );`);
 
-      console.log('Movie created Succesfully.');
+      let idFicha = await db
+        .select('ID_FICHA')
+        .from('PELICULA')
+        .where({
+          NOMBRE: movie.nombre,
+        })
+        .first();
+
+      movie.elenco.forEach(async (elenco: Elenco) => {
+        await db.raw(
+          `Call INSERTAR_ELENCO("${elenco.nombreRol}","${elenco.nombre}","${elenco.apellido}","${idFicha.ID_FICHA}")`,
+        );
+      });
+      movie.premios.forEach(async (award: Award) => {
+        await db.raw(
+          `Call PR_INSERTAR_PREMIO("${award.nombre}","${award.descripcion}","${award.anio}","${movie.nombre}")`,
+        );
+      });
+
+      await db.raw(
+        `Call INSERTAR_URL("${movie.nombre}","PELICULA","${movie.linkPelicula}")`,
+      );
+      await db.raw(
+        `Call INSERTAR_URL("${movie.nombre}","ESTRENO","${movie.linkEstreno}")`,
+      );
+      await db.raw(
+        `Call INSERTAR_URL("${movie.nombre}","POSTER","${movie.linkPoster}")`,
+      );
+
+      if (movie.linkTrailer) {
+        await db.raw(
+          `Call INSERTAR_URL("${movie.nombre}","TRAILER","${movie.linkTrailer}")`,
+        );
+      }
+      console.log('-- Movie created Succesfully.');
       return true;
     } catch (e) {
-      console.log(`Error: ${e}`);
+      console.log(`${e}`);
+      return false;
     }
   }
   editMovie(data: any): Promise<any> {

@@ -32,9 +32,13 @@ export async function getFrontPageVideo(request, response) {
 
 export async function createMovie(request, response) {
   try {
+    request.body.premios = JSON.parse(request.body.premios);
+    request.body.elenco = JSON.parse(request.body.elenco);
+
     const movieCreated = await _MovieService.createMovie(
       request.body,
       request.files.poster,
+      request.files.estreno,
     );
     if (movieCreated) response.status(200).json('Movie created succesfully');
   } catch (e) {
