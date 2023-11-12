@@ -50,7 +50,7 @@ export class GoogleCloudService implements IGoogleCloudService {
 
   public async get_file_url(filePath) {
     try {
-      return ` https://storage.googleapis.com/${this.bucketName}/${filePath}`;
+      return `https://storage.googleapis.com/${this.bucketName}/${filePath}`;
     } catch (e) {
       console.log(e);
       return;
