@@ -72,6 +72,12 @@ export const AppRoutes = [
     action: GenreController.getAllGenres,
   },
   {
+    path: '/roles',
+    auth: false,
+    method: 'get',
+    action: GenreController.getAllRoles,
+  },
+  {
     path: '/awards',
     auth: false,
     method: 'get',

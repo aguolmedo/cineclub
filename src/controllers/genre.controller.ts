@@ -1,4 +1,3 @@
-import { HealthcheckService } from '../services/healthcheck.service';
 import Types from '../services/types/types';
 
 import container from '../services/inversify.config';
@@ -12,6 +11,13 @@ export async function getAllGenres(request, response) {
   else response.status(500).json('Error getting genres');
 }
 
+export async function getAllRoles(request, response) {
+  const respuesta = await _GenreService.get_roles();
+  if (respuesta) response.status(200).json(respuesta);
+  else response.status(500).json('Error getting roles');
+}
+
 export const GenreController = {
   getAllGenres,
+  getAllRoles,
 };
