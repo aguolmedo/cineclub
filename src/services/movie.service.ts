@@ -100,7 +100,8 @@ export class MovieService implements IMovieService {
           '', // Initial value for linkPoster
           '', // Initial value for linkEstreno
         );
-        newMovie.oculta = pelicula.BL_OCULTA === 's';
+        newMovie.oculta = pelicula.BL_OCULTA === 'S';
+        newMovie.estreno = pelicula.BL_ESTRENO === 'S';
 
         urlsData.forEach((url) => {
           if (url.ID_PELICULA === pelicula.ID_PELICULA) {
