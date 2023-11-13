@@ -66,6 +66,12 @@ export const AppRoutes = [
     action: MovieController.createMovie,
   },
   {
+    path: '/movies',
+    auth: false,
+    method: 'get',
+    action: MovieController.getAllMovies,
+  },
+  {
     path: '/genres',
     auth: false,
     method: 'get',

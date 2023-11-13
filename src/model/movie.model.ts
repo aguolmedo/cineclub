@@ -14,10 +14,13 @@ class Movie {
   public calificacion: string;
   public premios: Award[];
   public elenco: Elenco[];
+  public idFichaTecnica: number;
+  public idPelicula: number;
   public linkTrailer: string;
   public linkPelicula: string;
   public linkPoster: string;
   public linkEstreno: string;
+  public oculta: boolean;
 
   constructor(
     nombre: string,
@@ -30,6 +33,7 @@ class Movie {
     soporte: string,
     premios: Award[],
     elenco: Elenco[],
+    idFichaTecnica: string,
     calificacion: string,
     linkTrailer: string,
     linkPelicula: string,

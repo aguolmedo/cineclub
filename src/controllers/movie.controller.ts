@@ -30,6 +30,12 @@ export async function getFrontPageVideo(request, response) {
   }
 }
 
+export async function getAllMovies(request, response) {
+  const respuesta = await _MovieService.get_movies();
+  if (respuesta) response.status(200).json(respuesta);
+  else response.status(500).json('Error getting movies');
+}
+
 export async function createMovie(request, response) {
   try {
     request.body.premios = JSON.parse(request.body.premios);
@@ -50,4 +56,5 @@ export const MovieController = {
   uploadFrontPageVideo,
   getFrontPageVideo,
   createMovie,
+  getAllMovies,
 };
