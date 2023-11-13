@@ -16,10 +16,10 @@ export class MovieService implements IMovieService {
     Types.GoogleCloudService,
   );
 
-  allMovies: Movie[] = [];
-
   async get_movies(): Promise<any> {
     try {
+      let allMovies: Movie[] = [];
+
       const peliculasData = await db
         .select('PELICULA.*', 'FICHATECNICA.*')
         .from('PELICULA')
@@ -150,10 +150,10 @@ export class MovieService implements IMovieService {
           }
         });
 
-        this.allMovies.push(newMovie);
+        allMovies.push(newMovie);
       });
 
-      return this.allMovies;
+      return allMovies;
     } catch (e) {
       console.log(e);
     }
