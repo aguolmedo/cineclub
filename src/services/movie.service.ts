@@ -229,6 +229,38 @@ export class MovieService implements IMovieService {
     throw new Error('Metodo no implementado');
   }
 
+  async switch_boolean_estreno(nombrePelicula: string) {
+    try {
+      await db('PELICULA')
+        .where({ NOMBRE: nombrePelicula })
+        .update({
+          BL_ESTRENO: db.raw(
+            "CASE WHEN BL_ESTRENO = 'N' THEN 'S' ELSE 'N' END",
+          ),
+        });
+
+      console.log(`Toggled BL_ESTRENO for ${nombrePelicula}`);
+      return true;
+    } catch (error) {
+      console.error('Error toggling BL_ESTRENO:', error.message);
+    }
+  }
+
+  async switch_boolean_oculta(nombrePelicula: string) {
+    try {
+      await db('PELICULA')
+        .where({ NOMBRE: nombrePelicula })
+        .update({
+          BL_OCULTA: db.raw("CASE WHEN BL_OCULTA = 'N' THEN 'S' ELSE 'N' END"),
+        });
+
+      console.log(`Toggled BL_OCULTA for ${nombrePelicula}`);
+      return true;
+    } catch (error) {
+      console.error('Error toggling BL_OCULTA:', error.message);
+    }
+  }
+
   async upload_front_page_video(videoFile: any) {
     let resourceUrl = await this._GoogleCloudService.upload_file(
       'front-page/front-page-video.mp4',

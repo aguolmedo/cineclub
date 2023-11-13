@@ -2,6 +2,7 @@ import Types from '../services/types/types';
 
 import container from '../services/inversify.config';
 import { MovieService } from '../services/movie.service';
+import { recoverPassword } from './user.controller';
 
 let _MovieService = container.get<MovieService>(Types.MovieService);
 
@@ -52,9 +53,45 @@ export async function createMovie(request, response) {
   }
 }
 
+export async function switchBooleanEstreno(request, response) {
+  try {
+    const estrenoBooleanSwitched = _MovieService.switch_boolean_estreno(
+      request.body.nombrePelicula,
+    );
+
+    if (estrenoBooleanSwitched)
+      response.status(200).json('Estreno switched succesfully');
+    else {
+      response.status(400).json('Error while switching BL_ESTRENO');
+    }
+  } catch (e) {
+    console.log(e);
+    response.status(500).json(e.toString());
+  }
+}
+
+export async function switchBooleanOculta(request, response) {
+  try {
+    const ocultaBooleanSwitched = _MovieService.switch_boolean_oculta(
+      request.body.nombrePelicula,
+    );
+
+    if (ocultaBooleanSwitched)
+      response.status(200).json('BL_OCULTA switched succesfully');
+    else {
+      response.status(400).json('Error while switching BL_OCULTAO');
+    }
+  } catch (e) {
+    console.log(e);
+    response.status(500).json(e.toString());
+  }
+}
+
 export const MovieController = {
   uploadFrontPageVideo,
   getFrontPageVideo,
   createMovie,
   getAllMovies,
+  switchBooleanEstreno,
+  switchBooleanOculta,
 };

@@ -66,6 +66,18 @@ export const AppRoutes = [
     action: MovieController.createMovie,
   },
   {
+    path: '/switchBooleanEstreno',
+    auth: false,
+    method: 'post',
+    action: MovieController.switchBooleanEstreno,
+  },
+  {
+    path: '/switchBooleanOculta',
+    auth: false,
+    method: 'post',
+    action: MovieController.switchBooleanOculta,
+  },
+  {
     path: '/movies',
     auth: false,
     method: 'get',
