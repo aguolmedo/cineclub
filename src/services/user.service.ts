@@ -94,7 +94,7 @@ export class UserService implements IUserService {
       })
       .first();
 
-    if (!userDb) false;
+    if (!userDb) return false;
 
     await db('USUARIOS')
       .update({

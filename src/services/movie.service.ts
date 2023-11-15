@@ -195,11 +195,13 @@ export class MovieService implements IMovieService {
           `Call INSERTAR_ELENCO("${elenco.nombreRol}","${elenco.nombre}","${elenco.apellido}","${idFicha.ID_FICHA}")`,
         );
       });
-      movie.premios.forEach(async (award: Award) => {
-        await db.raw(
-          `Call PR_INSERTAR_PREMIO("${award.nombre}","${award.descripcion}","${award.anio}","${movie.nombre}")`,
-        );
-      });
+      if (movie.premios.length > 0) {
+        movie.premios.forEach(async (award: Award) => {
+          await db.raw(
+            `Call PR_INSERTAR_PREMIO("${award.nombre}","${award.descripcion}","${award.anio}","${movie.nombre}")`,
+          );
+        });
+      }
 
       await db.raw(
         `Call INSERTAR_URL("${movie.nombre}","PELICULA","${movie.linkPelicula}")`,
