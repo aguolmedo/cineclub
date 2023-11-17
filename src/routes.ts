@@ -66,6 +66,18 @@ export const AppRoutes = [
     action: MovieController.createMovie,
   },
   {
+    path: '/updateMovie',
+    auth: false,
+    method: 'put',
+    action: MovieController.updateMovie,
+  },
+  {
+    path: '/deleteMovie',
+    auth: false,
+    method: 'delete',
+    action: MovieController.deleteMovie,
+  },
+  {
     path: '/switchBooleanEstreno',
     auth: false,
     method: 'post',

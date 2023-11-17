@@ -150,7 +150,7 @@ export class MovieService implements IMovieService {
             newMovie.premios.push(newPremio);
           }
         });
-
+        newMovie.idPelicula = pelicula.ID_PELICULA;
         allMovies.push(newMovie);
       });
 
@@ -160,20 +160,8 @@ export class MovieService implements IMovieService {
     }
   }
 
-  async createMovie(movie: Movie, imgPoster, imgEstreno) {
+  async create_movie(movie: Movie, imgPoster, imgEstreno) {
     try {
-      let moviePosterFormat = imgPoster.mimetype.split('/')[1];
-      let movieEstrenoFormat = imgEstreno.mimetype.split('/')[1];
-
-      movie.linkPoster = await this._GoogleCloudService.upload_file(
-        `movie-posters/${movie.nombre}-${movie.anioEstreno}-poster.${moviePosterFormat}`,
-        imgPoster,
-      );
-      movie.linkEstreno = await this._GoogleCloudService.upload_file(
-        `movie-posters/${movie.nombre}-${movie.anioEstreno}-estreno.${movieEstrenoFormat}`,
-        imgEstreno,
-      );
-
       await db.raw(`Call PR_INSERTAR_PELICULA(
       "${movie.nombre}",${movie.duracion},"${movie.sinopsis}","${movie.pais}",${movie.anioEstreno},"${movie.idioma}","${movie.soporte}","${movie.calificacion}"
       );`);
@@ -182,17 +170,29 @@ export class MovieService implements IMovieService {
         "${movie.nombre}","${movie.generos.toString()}"
       );`);
 
-      let idFicha = await db
-        .select('ID_FICHA')
+      let movieDb = await db
+        .select('ID_FICHA', 'ID_PELICULA')
         .from('PELICULA')
         .where({
           NOMBRE: movie.nombre,
         })
         .first();
 
+      let moviePosterFormat = imgPoster.mimetype.split('/')[1];
+      let movieEstrenoFormat = imgEstreno.mimetype.split('/')[1];
+
+      movie.linkPoster = await this._GoogleCloudService.upload_file(
+        `movie-posters/movieId${movieDb.ID_PELICULA}-poster.${moviePosterFormat}`,
+        imgPoster,
+      );
+      movie.linkEstreno = await this._GoogleCloudService.upload_file(
+        `movie-posters/movieId${movieDb.ID_PELICULA}-estreno.${movieEstrenoFormat}`,
+        imgEstreno,
+      );
+
       movie.elenco.forEach(async (elenco: Elenco) => {
         await db.raw(
-          `Call INSERTAR_ELENCO("${elenco.nombreRol}","${elenco.nombre}","${elenco.apellido}","${idFicha.ID_FICHA}")`,
+          `Call INSERTAR_ELENCO("${elenco.nombreRol}","${elenco.nombre}","${elenco.apellido}","${movieDb.ID_FICHA}")`,
         );
       });
       if (movie.premios.length > 0) {
@@ -225,11 +225,140 @@ export class MovieService implements IMovieService {
       return false;
     }
   }
-  editMovie(data: any): Promise<any> {
-    throw new Error('Method not implementado capo.');
+
+  async deleteMovie(movieName: string): Promise<any> {
+    try {
+      const movieDb = await db('PELICULA')
+        .where({ NOMBRE: movieName })
+        .select('ID_PELICULA')
+        .first();
+
+      if (!movieDb) return false;
+
+      await db.raw(`Call SP_BAJA_PELICULA(${movieDb.ID_PELICULA});`);
+    } catch (error) {
+      console.error('Error updating movie:', error);
+      return false;
+    }
   }
-  deleteMovie(data: any): Promise<any> {
-    throw new Error('Metodo no implementado');
+
+  async update_movie(movie: Movie, imgPoster, imgEstreno) {
+    try {
+      // Update the movie details in the PELICULA table
+      const movieDb = await db('PELICULA')
+        .where({ ID_PELICULA: movie.idPelicula })
+        .select('ID_PELICULA', 'ID_FICHA')
+        .first();
+
+      await db('FICHATECNICA')
+        .where({ ID_FICHA_TECNICA: movieDb.ID_FICHA })
+        .update({
+          DURACION: movie.duracion,
+          SINOPSIS: movie.sinopsis,
+          PAIS: movie.pais,
+          AÑO: movie.anioEstreno,
+          IDIOMA: movie.idioma,
+          SOPORTE: movie.soporte,
+          CALIFICACION: movie.calificacion,
+        });
+
+      // Update the genres associated with the movie in PELICULASxGENERO table
+      await db('PELICULASXGENERO')
+        .where({ ID_PELICULA: movieDb.ID_PELICULA })
+        .del(); // Delete existing genre associations
+
+      // Insert new genre associations
+      await db.raw(`Call SP_AGREGAR_GENERO_A_PELICULA(
+        "${movie.nombre}","${movie.generos.toString()}"
+      );`);
+
+      // Update the elenco associated with the movie in PELICULASXELENCO table
+      await db('PELICULASXELENCO')
+        .where({ ID_FICHA_TECNICA: movieDb.ID_FICHA })
+        .del(); // Delete existing elenco associations
+
+      // Insert new elenco information
+      movie.elenco.forEach(async (elenco: Elenco) => {
+        await db.raw(
+          `Call INSERTAR_ELENCO("${elenco.nombreRol}","${elenco.nombre}","${elenco.apellido}","${movieDb.ID_FICHA}")`,
+        );
+      });
+
+      // Update the genres associated with the movie in PELICULASXPREMIO table
+      await db('PELICULASXPREMIO')
+        .where({ ID_FICHA_TECNICA: movieDb.ID_FICHA })
+        .del(); // Delete existing premios information
+
+      // Insert new premios information
+      if (movie.premios.length > 0) {
+        movie.premios.forEach(async (award: Award) => {
+          await db.raw(
+            `Call PR_INSERTAR_PREMIO("${award.nombre}","${award.descripcion}","${award.anio}","${movie.nombre}")`,
+          );
+        });
+      }
+
+      // Update the URL information in the URL table
+      await db('URL')
+        .where({
+          ID_PELICULA: movieDb.ID_PELICULA,
+        })
+        .whereIn('ID_TIPO_URL', [3, 4])
+        .del(); // Delete existing URL information
+
+      // Insert new URL information
+      await db.raw(
+        `Call INSERTAR_URL("${movie.nombre}","PELICULA","${movie.linkPelicula}")`,
+      );
+
+      if (imgEstreno) {
+        await db('URL')
+          .where({
+            ID_PELICULA: movieDb.ID_PELICULA,
+            ID_TIPO_URL: 4, //4 es ESTRENO
+          })
+          .del();
+        let movieEstrenoFormat = imgEstreno.mimetype.split('/')[1];
+
+        movie.linkEstreno = await this._GoogleCloudService.upload_file(
+          `movie-posters/movieId${movieDb.ID_PELICULA}-estreno.${movieEstrenoFormat}`,
+          imgEstreno,
+        );
+
+        await db.raw(
+          `Call INSERTAR_URL("${movie.nombre}","ESTRENO","${movie.linkEstreno}")`,
+        );
+      }
+      if (imgPoster) {
+        await db('URL')
+          .where({
+            ID_PELICULA: movieDb.ID_PELICULA,
+            ID_TIPO_URL: 3, // 3 es POSTER
+          })
+          .del();
+        let moviePosterFormat = imgPoster.mimetype.split('/')[1];
+
+        movie.linkPoster = await this._GoogleCloudService.upload_file(
+          `movie-posters/movieId${movieDb.ID_PELICULA}-poster.${moviePosterFormat}`,
+          imgPoster,
+        );
+
+        await db.raw(
+          `Call INSERTAR_URL("${movie.nombre}","POSTER","${movie.linkPoster}")`,
+        );
+      }
+      if (movie.linkTrailer) {
+        await db.raw(
+          `Call INSERTAR_URL("${movie.nombre}","TRAILER","${movie.linkTrailer}")`,
+        );
+      }
+
+      console.log('-- Movie updated successfully.');
+      return true;
+    } catch (error) {
+      console.error('Error updating movie:', error);
+      return false;
+    }
   }
 
   async switch_boolean_estreno(nombrePelicula: string) {

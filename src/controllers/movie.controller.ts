@@ -2,7 +2,6 @@ import Types from '../services/types/types';
 
 import container from '../services/inversify.config';
 import { MovieService } from '../services/movie.service';
-import { recoverPassword } from './user.controller';
 
 let _MovieService = container.get<MovieService>(Types.MovieService);
 
@@ -42,7 +41,7 @@ export async function createMovie(request, response) {
     request.body.premios = JSON.parse(request.body.premios);
     request.body.elenco = JSON.parse(request.body.elenco);
 
-    const movieCreated = await _MovieService.createMovie(
+    const movieCreated = await _MovieService.create_movie(
       request.body,
       request.files.poster,
       request.files.estreno,
@@ -86,11 +85,46 @@ export async function switchBooleanOculta(request, response) {
     response.status(500).json(e.toString());
   }
 }
+export async function updateMovie(request, response) {
+  try {
+    request.body.premios = JSON.parse(request.body.premios);
+    request.body.elenco = JSON.parse(request.body.elenco);
+
+    const movieCreated = await _MovieService.update_movie(
+      request.body,
+      request.files.poster,
+      request.files.estreno,
+    );
+    if (movieCreated) response.status(200).json('Movie updated succesfully');
+  } catch (e) {
+    response.status(500).json(e.toString());
+  }
+}
+
+export async function deleteMovie(request, response) {
+  try {
+    if (!request.body.nombrePelicula)
+      response.status(400).json('No nombrePelicula was sended');
+    const movieDeleted = _MovieService.deleteMovie(request.body.nombrePelicula);
+
+    if (movieDeleted) response.status(200).json('Movie deleted succesfully');
+    else {
+      response
+        .status(400)
+        .json('Error while deleting movie: ' + request.body.nombrePelicula);
+    }
+  } catch (e) {
+    console.log(e);
+    response.status(500).json(e.toString());
+  }
+}
 
 export const MovieController = {
   uploadFrontPageVideo,
   getFrontPageVideo,
   createMovie,
+  updateMovie,
+  deleteMovie,
   getAllMovies,
   switchBooleanEstreno,
   switchBooleanOculta,
