@@ -250,6 +250,10 @@ export class MovieService implements IMovieService {
         .select('ID_PELICULA', 'ID_FICHA')
         .first();
 
+      await db('PELICULA')
+        .where({ ID_PELICULA: movie.idPelicula })
+        .update({ NOMBRE: movie.nombre });
+
       await db('FICHATECNICA')
         .where({ ID_FICHA_TECNICA: movieDb.ID_FICHA })
         .update({
