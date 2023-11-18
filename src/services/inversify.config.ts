@@ -14,6 +14,8 @@ import { GenreService } from './genre.service';
 import { IGenreService } from './interface/igenre.interface';
 import { AwardService } from './award.service';
 import { IAwardService } from './interface/iaward.interface';
+import { IStatisticsService } from './interface/istatistics.interface';
+import { StatisticsService } from './statistics.service';
 const container = new Container();
 
 container.bind<IAuthService>(Types.AuthService).to(AuthService);
@@ -32,4 +34,7 @@ container.bind<IGenreService>(Types.GenreService).to(GenreService);
 
 container.bind<IAwardService>(Types.AwardService).to(AwardService);
 
+container
+  .bind<IStatisticsService>(Types.StatisticsService)
+  .to(StatisticsService);
 export default container;

@@ -6,6 +6,7 @@ export const Types = {
   GoogleCloudService: Symbol('IGoogleCloudService'),
   GenreService: Symbol('IGenreService'),
   AwardService: Symbol('IAwardService'),
+  StatisticsService: Symbol('IStatisticsService'),
 };
 
 export default Types;

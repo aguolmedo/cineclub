@@ -92,8 +92,8 @@ export async function updateMovie(request, response) {
 
     const movieCreated = await _MovieService.update_movie(
       request.body,
-      request.files.poster,
-      request.files.estreno,
+      request.files?.poster,
+      request.files?.estreno,
     );
     if (movieCreated) response.status(200).json('Movie updated succesfully');
   } catch (e) {

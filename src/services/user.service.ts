@@ -2,7 +2,6 @@ import { injectable } from 'inversify';
 import { IUserService } from './interface/iuser.interface';
 import sha256 from '../utils/sha256.helper';
 import sha256Helper from '../utils/sha256.helper';
-import User from '../model/user.model';
 
 const db = require('../dbconfig');
 

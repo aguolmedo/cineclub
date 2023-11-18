@@ -4,6 +4,8 @@ import { UserController } from './controllers/user.controller';
 import { MovieController } from './controllers/movie.controller';
 import { AwardController } from './controllers/award.controller';
 import { GenreController } from './controllers/genre.controller';
+import { StatisticsController } from './controllers/statistics.controller';
+
 export const AppRoutes = [
   {
     path: '/healthCheck',
@@ -118,5 +120,11 @@ export const AppRoutes = [
     auth: false,
     method: 'post',
     action: AwardController.createAward,
+  },
+  {
+    path: '/mostViewedMovie',
+    auth: false,
+    method: 'get',
+    action: StatisticsController.getMostViewedMovie,
   },
 ];
