@@ -307,7 +307,7 @@ export class MovieService implements IMovieService {
         .where({
           ID_PELICULA: movieDb.ID_PELICULA,
         })
-        .whereIn('ID_TIPO_URL', [3, 4])
+        .whereIn('ID_TIPO_URL', [1, 2])
         .del(); // Delete existing URL information
 
       // Insert new URL information
