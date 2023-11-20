@@ -7,20 +7,23 @@ import Movie from '../model/movie.model';
 import axios, { all } from 'axios';
 import container from '../services/inversify.config';
 
+const db = require('../dbconfig');
+
 // @ts-ignore
 @injectable()
 export class StatisticsService implements IStatisticsService {
   _MovieService = container.get<MovieService>(Types.MovieService);
 
   async get_most_viewed_movie() {
-    const allMovies: Movie[] = await this._MovieService.get_movies();
-    let vimeoData = {
-      mostViewed: 0,
-      mostViewdIdVimeo: '',
-    };
+    try {
+      const allMovies: Movie[] = await this._MovieService.get_movies();
+      let vimeoData = {
+        nameMovie: '',
+        mostViewed: 0,
+        mostViewedIdVimeo: '',
+      };
 
-    for (const movie of allMovies) {
-      try {
+      for (const movie of allMovies) {
         let idVimeo = movie.linkPelicula.split('vimeo.com/')[1];
 
         if (idVimeo) {
@@ -31,15 +34,18 @@ export class StatisticsService implements IStatisticsService {
 
           if (vimeoStats.stats_number_of_plays > vimeoData.mostViewed) {
             vimeoData.mostViewed = vimeoStats.stats_number_of_plays;
-            vimeoData.mostViewdIdVimeo = vimeoStats.id;
+            vimeoData.mostViewedIdVimeo = vimeoStats.id;
           }
         }
-      } catch (e) {
-        console.log(e);
-        // Handle the error as needed
       }
-    }
+      const filteredMovies = allMovies.filter((movie) =>
+        movie.linkPelicula.includes(vimeoData.mostViewedIdVimeo),
+      );
+      vimeoData.nameMovie = filteredMovies[0].nombre;
 
-    return vimeoData;
+      return vimeoData;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

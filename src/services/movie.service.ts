@@ -384,11 +384,22 @@ export class MovieService implements IMovieService {
 
   async switch_boolean_oculta(nombrePelicula: string) {
     try {
+      const pelicula = await db('PELICULA')
+        .where({ NOMBRE: nombrePelicula })
+        .select('BL_ESTRENO')
+        .first();
+
       await db('PELICULA')
         .where({ NOMBRE: nombrePelicula })
         .update({
           BL_OCULTA: db.raw("CASE WHEN BL_OCULTA = 'N' THEN 'S' ELSE 'N' END"),
         });
+
+      if (pelicula.BL_ESTRENO === 'S') {
+        await db('PELICULA').where({ NOMBRE: nombrePelicula }).update({
+          BL_ESTRENO: 'N',
+        });
+      }
 
       console.log(`Toggled BL_OCULTA for ${nombrePelicula}`);
       return true;
