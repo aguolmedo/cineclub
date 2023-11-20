@@ -18,6 +18,7 @@ export class StatisticsService implements IStatisticsService {
     try {
       const allMovies: Movie[] = await this._MovieService.get_movies();
       let vimeoData = {
+        generos: [],
         nameMovie: '',
         mostViewed: 0,
         mostViewedIdVimeo: '',
@@ -42,6 +43,7 @@ export class StatisticsService implements IStatisticsService {
         movie.linkPelicula.includes(vimeoData.mostViewedIdVimeo),
       );
       vimeoData.nameMovie = filteredMovies[0].nombre;
+      vimeoData.generos = filteredMovies[0].generos;
 
       return vimeoData;
     } catch (e) {
