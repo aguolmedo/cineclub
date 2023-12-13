@@ -367,6 +367,23 @@ export class MovieService implements IMovieService {
 
   async switch_boolean_estreno(nombrePelicula: string) {
     try {
+      const count = await db('PELICULA')
+        .where({ BL_ESTRENO: 'S' })
+        .count({ count: '*' })
+        .first();
+
+      const numberOfEstrenos = parseInt(count.count);
+
+      const currentMovie = await db('PELICULA')
+        .where({ NOMBRE: nombrePelicula })
+        .select('BL_ESTRENO')
+        .first();
+
+      //Maximo 3 estrenos
+      if (currentMovie.BL_ESTRENO === 'N' && numberOfEstrenos >= 3) {
+        return false;
+      }
+
       await db('PELICULA')
         .where({ NOMBRE: nombrePelicula })
         .update({

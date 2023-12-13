@@ -54,7 +54,7 @@ export async function createMovie(request, response) {
 
 export async function switchBooleanEstreno(request, response) {
   try {
-    const estrenoBooleanSwitched = _MovieService.switch_boolean_estreno(
+    const estrenoBooleanSwitched = await _MovieService.switch_boolean_estreno(
       request.body.nombrePelicula,
     );
 
