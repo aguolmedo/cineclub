@@ -163,7 +163,12 @@ export class MovieService implements IMovieService {
   async create_movie(movie: Movie, imgPoster, imgEstreno) {
     try {
       await db.raw(`Call PR_INSERTAR_PELICULA(
-      "${movie.nombre}",${movie.duracion},"${movie.sinopsis}","${movie.pais}",${movie.anioEstreno},"${movie.idioma}","${movie.soporte}","${movie.calificacion}"
+      "${movie.nombre}",${movie.duracion},"${movie.sinopsis.replace(
+        /"/g,
+        "'",
+      )}","${movie.pais}",${movie.anioEstreno},"${movie.idioma}","${
+        movie.soporte
+      }","${movie.calificacion}"
       );`);
 
       await db.raw(`Call SP_AGREGAR_GENERO_A_PELICULA(
